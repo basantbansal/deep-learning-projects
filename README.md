@@ -1,4 +1,4 @@
-# deep-learning-projects-1
+# deep-learning-projects
 
 # Deep Learning Projects
 
