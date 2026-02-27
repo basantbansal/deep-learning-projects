@@ -1,5 +1,3 @@
-# deep-learning-projects
-
 # Deep Learning Projects
 
 A collection of computer vision projects built from scratch using TensorFlow and Keras.
@@ -8,71 +6,111 @@ A collection of computer vision projects built from scratch using TensorFlow and
 
 ## 1. Digit Recognizer (MNIST)
 
-**Goal:** Classify handwritten digits (0-9) from images
+**Kaggle Score: 0.99582 (99.58% accuracy)**
 
-**Result:** 99.2% accuracy on Kaggle leaderboard (top 15%)
+**Goal:** Classify handwritten digits (0-9) from 28x28 grayscale images
 
-**What I built:**
-- CNN from scratch with Conv2D, BatchNorm, Dropout layers
-- Data augmentation pipeline using ImageDataGenerator
-- Ensemble of 3 different CNN architectures
-- Real world testing on handwritten digit photos
+**Approach:**
+- Built CNN from scratch — no pretrained models
+- Ensemble of 3 different CNN architectures averaged together
+- Each model trained for 50 epochs on GPU
+
+**Architecture:**
+```
+Conv2D(32) → BN → Conv2D(32) → BN → MaxPool → Dropout(0.25)
+Conv2D(64) → BN → Conv2D(64) → BN → MaxPool → Dropout(0.25)  
+Conv2D(128) → BN → MaxPool → Dropout(0.25)
+Flatten → Dense(512) → Dropout(0.5) → Dense(10, softmax)
+```
 
 **Techniques used:**
-- Convolutional Neural Networks (CNN)
-- Batch Normalization
-- Dropout regularization
-- Data Augmentation
+- Batch Normalization after every Conv layer
+- Data Augmentation (rotation, zoom, shift)
+- Ensemble of 3 models with different random seeds
 - ReduceLROnPlateau callback
-- ModelCheckpoint callback
+- Real world testing on handwritten digit photos
 
-**Dataset:** MNIST - 42,000 training images, 28,000 test images
+**Key results:**
+- Validation accuracy: 99.6%
+- Kaggle leaderboard score: 0.99582
+- Successfully tested on real handwritten digit photos
+
+**Dataset:** MNIST — 42,000 training images, 28,000 test images
 
 ---
 
 ## 2. Facial Emotion Recognition (FER2013)
 
-**Goal:** Classify 7 emotions from face images (angry, disgust, fear, happy, neutral, sad, surprise)
+**Test Accuracy: ~60% (Human level on FER2013 is 65%)**
 
-**Result:** 60% test accuracy (human level on FER2013 is 65%)
+**Goal:** Classify 7 emotions from face images
+(angry, disgust, fear, happy, neutral, sad, surprise)
 
-**What I built:**
-- Deep CNN with 6 convolutional layers
+**Approach:**
+- Deep CNN with 6 convolutional layers trained from scratch
 - Real time face detection using OpenCV Haar Cascade
-- Tested on real face photos achieving 98% confidence on clear expressions
+- Tested on real face photos
+
+**Architecture:**
+```
+Conv2D(32) → BN → Conv2D(32) → BN → MaxPool → Dropout(0.25)
+Conv2D(64) → BN → Conv2D(64) → BN → MaxPool → Dropout(0.25)
+Conv2D(128) → BN → Conv2D(128) → BN → MaxPool → Dropout(0.25)
+Conv2D(256) → BN → Conv2D(256) → BN → MaxPool → Dropout(0.25)
+Flatten → Dense(256) → BN → Dropout(0.5) → Dense(7, softmax)
+Total params: 1.4M
+```
 
 **Techniques used:**
-- Deep CNN Architecture (32→64→128→256 filters)
+- Deep CNN Architecture (32 → 64 → 128 → 256 filters)
 - Batch Normalization after every Conv layer
-- Data Augmentation for face images
-- OpenCV face detection
-- Confusion Matrix and Classification Report analysis
+- ImageDataGenerator with flow_from_directory
 - ModelCheckpoint to save best weights
+- OpenCV face detection for real world testing
+- Confusion Matrix and Classification Report analysis
 
-**Dataset:** FER2013 - 35,000 grayscale face images, 7 emotion classes
+**Key results:**
+- Test accuracy: ~60%
+- 98% confidence on clear happy face photo
+- Identified domain shift problem between dataset and real world photos
+- Near human level performance (humans score 65% on FER2013)
 
-**Key insight:** Identified domain shift problem — model trained on exaggerated FER2013 expressions performs differently on real world subtle expressions
-
----
-
-## Skills Demonstrated
-
-- TensorFlow / Keras
-- CNN Architecture Design from scratch
-- Data Augmentation strategies
-- Transfer Learning concepts
-- Model Evaluation (Confusion Matrix, F1 Score, Classification Report)
-- OpenCV for real world image processing
-- Kaggle competition workflow
+**Dataset:** FER2013 — 35,000 grayscale face images, 7 emotion classes
 
 ---
 
-## Tools Used
+## Key Learnings
 
-- Python
-- TensorFlow / Keras
-- OpenCV
-- NumPy / Pandas
-- Matplotlib / Seaborn
-- Scikit-learn
-- Kaggle (GPU training)
+- CNN architecture design from scratch
+- Why BatchNormalization stabilizes training
+- Data augmentation strategies for different problem types
+- Ensemble methods for improving accuracy
+- Domain shift — why models behave differently on real world data
+- Class imbalance impact on model performance
+- Transfer learning concepts (InceptionV3 experimentation)
+
+---
+
+## Tools and Libraries
+
+| Tool | Purpose |
+|------|---------|
+| TensorFlow / Keras | Model building and training |
+| OpenCV | Real world image processing and face detection |
+| NumPy / Pandas | Data manipulation |
+| Matplotlib / Seaborn | Visualization |
+| Scikit-learn | Evaluation metrics |
+| Kaggle | GPU training and competition submission |
+
+---
+
+## Results Summary
+
+| Project | Dataset | Accuracy | Platform |
+|---------|---------|----------|----------|
+| Digit Recognizer | MNIST | 99.58% | Kaggle Leaderboard |
+| Emotion Recognition | FER2013 | ~60% | Test Set |
+
+---
+
+*Built while learning deep learning from scratch — Feb 2026*
